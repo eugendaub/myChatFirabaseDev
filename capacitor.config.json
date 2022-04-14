@@ -1,0 +1,6 @@
+{
+	"appId": "io.ionic.starter",
+	"appName": "academyChat",
+	"webDir": "www",
+	"bundledWebRuntime": false
+}
