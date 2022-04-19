@@ -3,11 +3,12 @@ import {
   Auth,
   createUserWithEmailAndPassword,
   onAuthStateChanged,
-  signInWithEmailAndPassword,
+  signInWithEmailAndPassword, signOut,
   UserCredential
 } from '@angular/fire/auth';
 import {doc, docData, Firestore, setDoc} from '@angular/fire/firestore';
 import {take, takeUntil} from 'rxjs/operators';
+import {Router} from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
@@ -16,7 +17,8 @@ export class AuthService {
   currentUserData = null;
 
   constructor( private auth: Auth,
-               private firestore: Firestore) {
+               private firestore: Firestore,
+               private router: Router) {
     onAuthStateChanged(this.auth, user => {
       console.log('USER changed: ', user);
       if (user) {
@@ -46,5 +48,10 @@ export class AuthService {
 }
   login({email, password}) {
     return signInWithEmailAndPassword(this.auth, email, password);
+  }
+
+  async logout(){
+    await signOut(this.auth);
+    this.router.navigateByUrl('/', {replaceUrl: true});
   }
 }
