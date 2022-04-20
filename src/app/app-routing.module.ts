@@ -18,7 +18,7 @@ const routes: Routes = [
     path: 'inside',
     loadChildren: () => import('./pages/overview/overview.module').then( m => m.OverviewPageModule),
     canActivate: [AuthGuard]
-  },
+  }
 ];
 
 @NgModule({

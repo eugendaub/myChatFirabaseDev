@@ -7,13 +7,15 @@ import { IonicModule } from '@ionic/angular';
 import { OverviewPageRoutingModule } from './overview-routing.module';
 
 import { OverviewPage } from './overview.page';
+import {StartGroupModalPageModule} from '../start-group-modal/start-group-modal.module';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    OverviewPageRoutingModule
+    OverviewPageRoutingModule,
+    StartGroupModalPageModule
   ],
   declarations: [OverviewPage]
 })

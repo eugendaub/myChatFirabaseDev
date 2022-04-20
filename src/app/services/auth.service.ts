@@ -14,25 +14,27 @@ import {Router} from '@angular/router';
   providedIn: 'root'
 })
 export class AuthService {
-  currentUserData = null;
+  private currentUserData = null;
 
-  constructor( private auth: Auth,
-               private firestore: Firestore,
-               private router: Router) {
+  constructor(private auth: Auth, private firestore: Firestore, private router: Router) {
+
     onAuthStateChanged(this.auth, user => {
-      console.log('USER changed: ', user);
       if (user) {
-        const userDoc = doc(this.firestore, `users/${user.uid}`);
+        const userDoc = doc(this.firestore, `user/${user.uid}`);
         docData(userDoc, { idField: 'id' }).pipe(
           take(1)
         ).subscribe(data => {
+          console.log('userdata: ', data);
           this.currentUserData = data;
-        });
+
+        })
       } else {
         this.currentUserData = null;
       }
-    });
+    })
   }
+
+
 
 
   async signup({email, password}): Promise<UserCredential> {
@@ -53,5 +55,13 @@ export class AuthService {
   async logout(){
     await signOut(this.auth);
     this.router.navigateByUrl('/', {replaceUrl: true});
+  }
+
+  getUserId(){
+    return this.currentUserData.id;
+  }
+
+  getUserEmail(){
+    return this.currentUserData.email;
   }
 }

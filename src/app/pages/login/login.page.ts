@@ -49,7 +49,7 @@ export class LoginPage implements OnInit {
     await loading.present();
 
     this.authService.login(this.credentialsForm.value).then(user => {
-      console.log(user);
+      //console.log(user);
       loading.dismiss();
       this.router.navigateByUrl('/inside', { replaceUrl: true });
     }, async err => {
