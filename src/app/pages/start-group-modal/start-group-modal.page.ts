@@ -12,27 +12,20 @@ export class StartGroupModalPage implements OnInit {
   group = false;
   groupName = '';
 
-  constructor(private chatService: ChatService,
-              private modalCtrl: ModalController) { }
+  constructor(private chatService: ChatService, private modalCtrl: ModalController) { }
 
   ngOnInit() {
-    this.chatService.getAllUsers().subscribe(res=>{
-      console.log('user: ', res);
+    this.chatService.getAllUsers().subscribe(res => {
       this.users = res;
     });
   }
 
-
-  close(){
-    this.modalCtrl.dismiss();
-  }
-
-  startGroup(){
-    console.log('group: ', this.users);
+  startGroup() {
     const selected = this.users.filter(user => user.selected);
-    if (selected.length == 0){
+    if (selected.length == 0) {
       return;
     }
+
     this.modalCtrl.dismiss({
       action: 'group',
       name: this.groupName,
@@ -40,14 +33,19 @@ export class StartGroupModalPage implements OnInit {
     });
   }
 
-  startChat(user){
-    if(this.group){
+  startChat(user) {
+    if (this.group) {
       return;
     }
+
     this.modalCtrl.dismiss({
       action: 'single',
-      user: {email: user.email, id: user.id}
+      users: { email: user.email, id: user.id }
     });
+  }
+
+  close() {
+    this.modalCtrl.dismiss();
   }
 
 }

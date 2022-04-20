@@ -20,7 +20,7 @@ export class AuthService {
 
     onAuthStateChanged(this.auth, user => {
       if (user) {
-        const userDoc = doc(this.firestore, `user/${user.uid}`);
+        const userDoc = doc(this.firestore, `users/${user.uid}`);
         docData(userDoc, { idField: 'id' }).pipe(
           take(1)
         ).subscribe(data => {
@@ -40,7 +40,7 @@ export class AuthService {
   async signup({email, password}): Promise<UserCredential> {
     try {
       const credentials = await createUserWithEmailAndPassword(this.auth, email, password);
-      const userDoc = doc(this.firestore, `user/${credentials.user.uid}`);
+      const userDoc = doc(this.firestore, `users/${credentials.user.uid}`);
       await setDoc(userDoc, {email, chats: []});
       return credentials;
     }catch (err){

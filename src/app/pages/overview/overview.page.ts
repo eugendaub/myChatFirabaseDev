@@ -31,7 +31,7 @@ export class OverviewPage implements OnInit {
     console.log('AFTER close: ' , data);
     if(data){
       if(data.action == 'single'){
-        await this.chatService.startChat(data.user);
+        await this.chatService.startChat(data.users);
       }else if(data.action == 'group'){
         await  this.chatService.startGroup(data.name, data.users);
       }

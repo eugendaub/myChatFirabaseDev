@@ -12,12 +12,14 @@ export class ChatService {
               private auth: AuthService) { }
 
   getAllUsers(){
-    const userId = this.auth.getUserEmail();
+    const userId = this.auth.getUserId();
 
-    const userRef = collection(this.firestore, 'user');
+    const userRef = collection(this.firestore, 'users');
     return collectionData(userRef,{idField: 'id'}).pipe(
       take(1),
-      map( users => users.filter(user => user.id !== userId))
+      map( users => {
+        return users.filter(user => user.id !== userId);
+  })
     );
   }
   startChat(user){
@@ -51,7 +53,7 @@ export class ChatService {
   private addChat(chatUsers,name){
     const chatsRef = collection(this.firestore, 'chats');
     const chat = {
-      user: chatUsers,
+      users: chatUsers,
       name
     };
 
@@ -63,7 +65,7 @@ export class ChatService {
       // In der DB muss für jeden user der DB eintrag angepasst werden
       // (in diesem Fall in welchen Chats befindet sich der User)
       for(const user of chatUsers){
-        const userChatsRef = doc(this.firestore, `user/${user.id}`);
+        const userChatsRef = doc(this.firestore, `users/${user.id}`);
         const update = updateDoc(userChatsRef, {
           chats: arrayUnion(groupID)
         });
