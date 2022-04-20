@@ -10,6 +10,7 @@ import {ChatService} from '../../services/chat.service';
   styleUrls: ['./overview.page.scss'],
 })
 export class OverviewPage implements OnInit {
+  chats = [];
 
   constructor(private authService: AuthService,
               private modalCtrl: ModalController,
@@ -17,6 +18,14 @@ export class OverviewPage implements OnInit {
               private chatService: ChatService) { }
 
   ngOnInit() {
+    this.loadChats();
+  }
+
+  loadChats(){
+    this.chatService.getUserChats().subscribe(res => {
+      console.log('my chat: ', res);
+      this.chats = res;
+    });
   }
 
   async startGroup(){

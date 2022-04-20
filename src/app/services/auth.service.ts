@@ -27,11 +27,11 @@ export class AuthService {
           console.log('userdata: ', data);
           this.currentUserData = data;
 
-        })
+        });
       } else {
         this.currentUserData = null;
       }
-    })
+    });
   }
 
 
@@ -58,7 +58,7 @@ export class AuthService {
   }
 
   getUserId(){
-    return this.currentUserData.id;
+    return this.auth.currentUser.uid;
   }
 
   getUserEmail(){

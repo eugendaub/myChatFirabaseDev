@@ -1,7 +1,18 @@
 import { Injectable } from '@angular/core';
-import {addDoc, arrayUnion, collection, collectionData, doc, Firestore, updateDoc} from '@angular/fire/firestore';
+import {
+  addDoc,
+  arrayUnion,
+  collection,
+  collectionData,
+  doc,
+  docData, documentId,
+  Firestore, query,
+  updateDoc, where
+} from '@angular/fire/firestore';
 import {AuthService} from './auth.service';
-import {map, take} from 'rxjs/operators';
+import {map, switchMap, take} from 'rxjs/operators';
+import {Observable} from 'rxjs';
+import {DocumentData} from '@angular/fire/compat/firestore';
 
 @Injectable({
   providedIn: 'root'
@@ -17,9 +28,7 @@ export class ChatService {
     const userRef = collection(this.firestore, 'users');
     return collectionData(userRef,{idField: 'id'}).pipe(
       take(1),
-      map( users => {
-        return users.filter(user => user.id !== userId);
-  })
+      map( users => users.filter(user => user.id !== userId))
     );
   }
   startChat(user){
@@ -73,5 +82,22 @@ export class ChatService {
       }
       return Promise.all(promises);
     });
+  }
+
+
+
+  getUserChats() {
+    const userId = this.auth.getUserId();
+    const userRef = doc(this.firestore, `users/${userId}`);
+    return docData(userRef).pipe(
+      switchMap(data => {
+        console.log('getUserChta Data: ', data);
+        const userChats = data.chats;
+        const chatsRef = collection(this.firestore, 'chats');
+        const q = query(chatsRef, where(documentId(), 'in', userChats));
+        return collectionData(q, { idField: 'id' });
+      }),
+      take(1)
+    );
   }
 }

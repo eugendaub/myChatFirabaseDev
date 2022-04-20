@@ -18,6 +18,10 @@ const routes: Routes = [
     path: 'inside',
     loadChildren: () => import('./pages/overview/overview.module').then( m => m.OverviewPageModule),
     canActivate: [AuthGuard]
+  },
+  {
+    path: 'inside/:chatid',
+    loadChildren: () => import('./pages/chat/chat.module').then( m => m.ChatPageModule)
   }
 ];
 
