@@ -11,6 +11,7 @@ import {ChatService} from '../../services/chat.service';
 })
 export class OverviewPage implements OnInit {
   chats = [];
+  logInUserEmail = null;
 
   constructor(private authService: AuthService,
               private modalCtrl: ModalController,
@@ -25,6 +26,7 @@ export class OverviewPage implements OnInit {
     this.chatService.getUserChats().subscribe(res => {
       console.log('my chat: ', res);
       this.chats = res;
+      this.logInUserEmail = this.authService.getUserEmail();
     });
   }
 

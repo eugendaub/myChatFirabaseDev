@@ -6,7 +6,7 @@ import {
   collectionData,
   doc,
   docData, documentId,
-  Firestore, query,
+  Firestore, orderBy, query, serverTimestamp,
   updateDoc, where
 } from '@angular/fire/firestore';
 import {AuthService} from './auth.service';
@@ -99,5 +99,26 @@ export class ChatService {
       }),
       take(1)
     );
+  }
+
+  getChatInfo(chatId){
+    const chat = doc(this.firestore, `chats/${chatId}`);
+    return docData(chat);
+  }
+
+  getChatMessages(chatId){
+    const messages = collection(this.firestore, `chats/${chatId}/messages`);
+    const q = query(messages, orderBy('createdAt'));
+    return collectionData(q, {idField: 'id'});
+  }
+
+  addMessage(chatId,msg){
+    const userId = this.auth.getUserId();
+    const messages = collection(this.firestore, `chats/${chatId}/messages`);
+    return addDoc( messages, {
+      from: userId,
+      msg,
+      createdAt: serverTimestamp()
+    });
   }
 }

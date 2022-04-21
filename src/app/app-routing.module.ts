@@ -21,7 +21,8 @@ const routes: Routes = [
   },
   {
     path: 'inside/:chatid',
-    loadChildren: () => import('./pages/chat/chat.module').then( m => m.ChatPageModule)
+    loadChildren: () => import('./pages/chat/chat.module').then( m => m.ChatPageModule),
+    canActivate: [AuthGuard]
   }
 ];
 
