@@ -3,8 +3,8 @@ import {ActivatedRoute} from '@angular/router';
 import {AuthService} from '../../services/auth.service';
 import {ChatService} from '../../services/chat.service';
 import {map, switchMap} from 'rxjs/operators';
-import {DocumentData} from '@angular/fire/compat/firestore';
 import {IonContent} from '@ionic/angular';
+import {Camera, CameraResultType, CameraSource} from '@capacitor/camera';
 
 @Component({
   selector: 'app-chat',
@@ -79,8 +79,18 @@ export class ChatPage implements OnInit {
     this.content.scrollToBottom(300);
   }
 
-  selectImage(){
+   async selectImage(){
+    const image = await Camera.getPhoto({
+      quality: 90,
+      allowEditing: false,
+      source: CameraSource.Photos,
+      resultType: CameraResultType.Base64
+    });
 
+    if(image){
+      console.log('image:', image);
+      await this.chatService.addFileMsg(image.base64String, this.chatId);
+    }
   }
 
 }

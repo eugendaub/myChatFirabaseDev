@@ -13,6 +13,7 @@ import {AuthService} from './auth.service';
 import {map, switchMap, take} from 'rxjs/operators';
 import {Observable} from 'rxjs';
 import {DocumentData} from '@angular/fire/compat/firestore';
+import {getDownloadURL, ref, Storage, uploadString} from '@angular/fire/storage';
 
 @Injectable({
   providedIn: 'root'
@@ -20,7 +21,8 @@ import {DocumentData} from '@angular/fire/compat/firestore';
 export class ChatService {
 
   constructor(private firestore: Firestore,
-              private auth: AuthService) { }
+              private auth: AuthService,
+              private storage: Storage) { }
 
   getAllUsers(){
     const userId = this.auth.getUserId();
@@ -120,5 +122,26 @@ export class ChatService {
       msg,
       createdAt: serverTimestamp()
     });
+  }
+
+  async addFileMsg(base64, chatId){
+    const userId = this.auth.getUserId();
+    const newName = `${new Date().getTime()}-${userId}.jpeg`;
+
+    const storageRef = ref(this.storage, newName);
+    const uploadResult = await uploadString(storageRef, base64 , 'base64',{
+      contentType: 'image/jpeg'
+    });
+    console.log('uploadResult: ', uploadResult);
+
+    const url = await getDownloadURL(uploadResult.ref);
+
+    const messages = collection(this.firestore, `chats/${chatId}/messages`);
+    return addDoc( messages, {
+      from: userId,
+      file: url,
+      createdAt: serverTimestamp()
+    });
+
   }
 }
