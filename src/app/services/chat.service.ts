@@ -124,24 +124,24 @@ export class ChatService {
     });
   }
 
-  async addFileMsg(base64, chatId){
+  async addFileMsg(base64, chatId) {
     const userId = this.auth.getUserId();
-    const newName = `${new Date().getTime()}-${userId}.jpeg`;
+    let newName = `${new Date().getTime()}-${userId}.jpeg`;
 
     const storageRef = ref(this.storage, newName);
-    const uploadResult = await uploadString(storageRef, base64 , 'base64',{
+    const uploadResult = await uploadString(storageRef, base64, 'base64', {
       contentType: 'image/jpeg'
     });
-    console.log('uploadResult: ', uploadResult);
 
     const url = await getDownloadURL(uploadResult.ref);
 
     const messages = collection(this.firestore, `chats/${chatId}/messages`);
-    return addDoc( messages, {
+    return addDoc(messages, {
       from: userId,
       file: url,
       createdAt: serverTimestamp()
     });
-
   }
+
+
 }

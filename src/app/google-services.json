@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "330840006933",
+    "project_id": "ionic-firebase-chat-dev",
+    "storage_bucket": "ionic-firebase-chat-dev.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:330840006933:android:45e1c4ebf7852c28bec91c",
+        "android_client_info": {
+          "package_name": "com.academy.firechat"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "330840006933-r6sujql7plh2mj06hkf87565kh2jt0pu.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBLUe__VrH21GiraCKg4R59YEK6QE3Xe3M"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "330840006933-r6sujql7plh2mj06hkf87565kh2jt0pu.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -79,7 +79,7 @@ export class ChatPage implements OnInit {
     this.content.scrollToBottom(300);
   }
 
-   async selectImage(){
+  async selectImage() {
     const image = await Camera.getPhoto({
       quality: 90,
       allowEditing: false,
@@ -87,9 +87,9 @@ export class ChatPage implements OnInit {
       resultType: CameraResultType.Base64
     });
 
-    if(image){
-      console.log('image:', image);
-      await this.chatService.addFileMsg(image.base64String, this.chatId);
+    if (image) {
+      console.log('image: ', image);
+      this.chatService.addFileMsg(image.base64String, this.chatId);
     }
   }
 
