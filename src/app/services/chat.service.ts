@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import {
-  addDoc,
+  addDoc, arrayRemove,
   arrayUnion,
   collection,
   collectionData,
@@ -40,6 +40,9 @@ export class ChatService {
       {id: userID, email: userEmail},
       {id: user.id, email: user.email}
     ];
+    for(const userr of chatUsers) {
+      console.log('userrr: ', userr.id);
+    }
     return this.addChat(chatUsers, user.email);
 
   }
@@ -69,12 +72,13 @@ export class ChatService {
     };
 
     return addDoc(chatsRef, chat).then( res => {
-      console.log('created chat: ', res);
+      console.log('created chat ADDDOC: ', res);
       const groupID = res.id;
       const promises = [];
 
       // In der DB muss für jeden user der DB eintrag angepasst werden
       // (in diesem Fall in welchen Chats befindet sich der User)
+
       for(const user of chatUsers){
         const userChatsRef = doc(this.firestore, `users/${user.id}`);
         const update = updateDoc(userChatsRef, {
@@ -143,5 +147,19 @@ export class ChatService {
     });
   }
 
+  leaveChat(chatId) {
+    const userId = this.auth.getUserId();
+    const userEmail = this.auth.getUserEmail();
+
+    const chatRef = doc(this.firestore, `chats/${chatId}`);
+    return updateDoc(chatRef, {
+      users: arrayRemove({ id: userId, email: userEmail })
+    }).then(res => {
+      const userRef = doc(this.firestore, `users/${userId}`);
+      return updateDoc(userRef, {
+        chats: arrayRemove(chatId)
+      });
+    });
+  }
 
 }

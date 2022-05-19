@@ -4,6 +4,11 @@
       <ion-back-button defaultHref="/inside"></ion-back-button>
     </ion-buttons>
     <ion-title>{{chatInfo?.name}}</ion-title>
+    <ion-buttons slot="end">
+     <ion-button (click)="leaveChat()">
+       <ion-icon name="exit-outline" slot="icon-only"></ion-icon>
+     </ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 

@@ -1,5 +1,5 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
-import {ActivatedRoute} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import {AuthService} from '../../services/auth.service';
 import {ChatService} from '../../services/chat.service';
 import {map, switchMap} from 'rxjs/operators';
@@ -25,11 +25,13 @@ export class ChatPage implements OnInit {
 
   constructor(private route: ActivatedRoute,
               private authService: AuthService,
-              private chatService: ChatService) { }
+              private chatService: ChatService,
+              private router: Router) { }
 
   ngOnInit() {
     this.chatId = this.route.snapshot.paramMap.get('chatid');
     this.currentUserId = this.authService.getUserId();
+    console.log('CHAT ID: ', this.chatId);
 
     console.log('My Chat: ', this.chatId);
     this.chatService.getChatInfo(this.chatId).pipe(
@@ -62,6 +64,7 @@ export class ChatPage implements OnInit {
   }
 
   sendMessage(){
+    console.log('send message chatID: ', this.chatId);
     this.chatService.addMessage(this.chatId, this.msg).then(_=>{
       this.msg = '';
       this.content.scrollToBottom(300);
@@ -91,6 +94,12 @@ export class ChatPage implements OnInit {
       console.log('image: ', image);
       this.chatService.addFileMsg(image.base64String, this.chatId);
     }
+  }
+
+  leaveChat(){
+    this.chatService.leaveChat(this.chatId).then(_=> {
+      this.router.navigateByUrl('/inside');
+    });
   }
 
 }
