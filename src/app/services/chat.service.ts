@@ -130,7 +130,7 @@ export class ChatService {
 
   async addFileMsg(base64, chatId) {
     const userId = this.auth.getUserId();
-    let newName = `${new Date().getTime()}-${userId}.jpeg`;
+    const newName = `${new Date().getTime()}-${userId}.jpeg`;
 
     const storageRef = ref(this.storage, newName);
     const uploadResult = await uploadString(storageRef, base64, 'base64', {
